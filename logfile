@@ -1,0 +1,41 @@
+2024-12-20 23:17:46.078 EST [570] LOG:  starting PostgreSQL 14.15 (Homebrew) on aarch64-apple-darwin23.6.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.4), 64-bit
+2024-12-20 23:17:46.078 EST [570] LOG:  could not bind IPv6 address "::1": Address already in use
+2024-12-20 23:17:46.078 EST [570] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-20 23:17:46.079 EST [570] LOG:  could not bind IPv4 address "127.0.0.1": Address already in use
+2024-12-20 23:17:46.079 EST [570] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-20 23:17:46.079 EST [570] WARNING:  could not create listen socket for "localhost"
+2024-12-20 23:17:46.079 EST [570] FATAL:  could not create any TCP/IP sockets
+2024-12-20 23:17:46.079 EST [570] LOG:  database system is shut down
+2024-12-20 23:18:31.693 EST [1521] LOG:  starting PostgreSQL 14.15 (Homebrew) on aarch64-apple-darwin23.6.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.4), 64-bit
+2024-12-20 23:18:31.694 EST [1521] LOG:  could not bind IPv6 address "::1": Address already in use
+2024-12-20 23:18:31.694 EST [1521] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-20 23:18:31.694 EST [1521] LOG:  could not bind IPv4 address "127.0.0.1": Address already in use
+2024-12-20 23:18:31.694 EST [1521] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-20 23:18:31.694 EST [1521] WARNING:  could not create listen socket for "localhost"
+2024-12-20 23:18:31.694 EST [1521] FATAL:  could not create any TCP/IP sockets
+2024-12-20 23:18:31.695 EST [1521] LOG:  database system is shut down
+2024-12-20 23:19:13.087 EST [2335] LOG:  starting PostgreSQL 14.15 (Homebrew) on aarch64-apple-darwin23.6.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.4), 64-bit
+2024-12-20 23:19:13.088 EST [2335] LOG:  could not bind IPv6 address "::1": Address already in use
+2024-12-20 23:19:13.088 EST [2335] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-20 23:19:13.088 EST [2335] LOG:  could not bind IPv4 address "127.0.0.1": Address already in use
+2024-12-20 23:19:13.088 EST [2335] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-20 23:19:13.088 EST [2335] WARNING:  could not create listen socket for "localhost"
+2024-12-20 23:19:13.088 EST [2335] FATAL:  could not create any TCP/IP sockets
+2024-12-20 23:19:13.088 EST [2335] LOG:  database system is shut down
+2024-12-20 23:23:08.957 EST [6454] LOG:  starting PostgreSQL 14.15 (Homebrew) on aarch64-apple-darwin23.6.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.4), 64-bit
+2024-12-20 23:23:08.958 EST [6454] LOG:  could not bind IPv6 address "::1": Address already in use
+2024-12-20 23:23:08.958 EST [6454] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-20 23:23:08.958 EST [6454] LOG:  could not bind IPv4 address "127.0.0.1": Address already in use
+2024-12-20 23:23:08.958 EST [6454] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-20 23:23:08.958 EST [6454] WARNING:  could not create listen socket for "localhost"
+2024-12-20 23:23:08.958 EST [6454] FATAL:  could not create any TCP/IP sockets
+2024-12-20 23:23:08.958 EST [6454] LOG:  database system is shut down
+2024-12-20 23:23:24.782 EST [6984] LOG:  starting PostgreSQL 14.15 (Homebrew) on aarch64-apple-darwin23.6.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.4), 64-bit
+2024-12-20 23:23:24.783 EST [6984] LOG:  listening on IPv6 address "::1", port 5432
+2024-12-20 23:23:24.783 EST [6984] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2024-12-20 23:23:24.783 EST [6984] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2024-12-20 23:23:24.786 EST [6985] LOG:  database system was shut down at 2024-12-20 23:17:33 EST
+2024-12-20 23:23:24.788 EST [6984] LOG:  database system is ready to accept connections
+2024-12-20 23:23:50.840 EST [7471] FATAL:  role "postgres" does not exist
+2024-12-22 12:47:05.374 EST [48805] FATAL:  database "chloe" does not exist
+2024-12-22 12:48:58.438 EST [51065] FATAL:  database "chloe" does not exist
