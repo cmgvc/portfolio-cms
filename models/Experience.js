@@ -23,3 +23,5 @@ const Experience = sequelize.define('Experience', {
         allowNull: false,
     }
 })
+
+module.exports = Experience;

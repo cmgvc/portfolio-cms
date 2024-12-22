@@ -6,7 +6,17 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5001;
+
 app.use(express.json());
+
+const experienceRoutes = require('./routes/experiences');
+const projectRoutes = require('./routes/projects');
+const aboutRoutes = require('./routes/about');
+
+app.use('/experiences', experienceRoutes);
+app.use('/projects', projectRoutes);
+app.use('/about', aboutRoutes);
+
 
 const testDBConnection = async () => {
     try {
