@@ -1,22 +1,26 @@
 const express = require('express');
 const sequelize = require('./config/database');
+const cors = require('cors');
 const Experience = require('./models/Experience');
+const User = require('./models/User');
 const Project = require('./models/Project');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5001;
+app.use(cors());
 
 app.use(express.json());
 
 const experienceRoutes = require('./routes/experiences');
 const projectRoutes = require('./routes/projects');
 const aboutRoutes = require('./routes/about');
+const authRoutes = require('./routes/auth');
 
 app.use('/experiences', experienceRoutes);
 app.use('/projects', projectRoutes);
 app.use('/about', aboutRoutes);
-
+app.use('/auth', authRoutes);
 
 const testDBConnection = async () => {
     try {
