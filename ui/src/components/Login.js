@@ -6,7 +6,7 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const url = 'http://localhost:5001';
+    const url = 'https://portfolio-cms-ncqv.onrender.com';// 'http://localhost:5001';
     
     useEffect(() => {
         localStorage.getItem('token') ? window.location.href = '/' : setAuth(false);

@@ -27,7 +27,7 @@ const CMSDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const API_BASE = 'http://localhost:5001'; 
+  const API_BASE = 'https://portfolio-cms-ncqv.onrender.com';//'http://localhost:5001'; 
   const ENDPOINTS = {
     projects: `${API_BASE}/projects`,
     experiences: `${API_BASE}/experiences`,
