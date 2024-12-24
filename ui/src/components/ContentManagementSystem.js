@@ -3,7 +3,13 @@ import React, { useState, useEffect } from 'react';
 const CMSDashboard = () => {
   const [projects, setProjects] = useState([]);
   const [experiences, setExperiences] = useState([]);
-  const [about, setAbout] = useState('');
+  const [about, setAbout] = useState({
+    description: '',
+    description2: '',
+    hobbies: '',
+    skills: '',
+    });
+
   const [activeTab, setActiveTab] = useState('projects');
   
   const [newProject, setNewProject] = useState({
@@ -27,11 +33,13 @@ const CMSDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const API_BASE = 'https://portfolio-cms-ncqv.onrender.com';//'http://localhost:5001'; 
+//   const API_BASE = 'https://portfolio-cms-ncqv.onrender.com';
+  const API_BASE = 'http://localhost:5001'; 
   const ENDPOINTS = {
     projects: `${API_BASE}/projects`,
     experiences: `${API_BASE}/experiences`,
-    about: `${API_BASE}/about`
+    about: `${API_BASE}/about`,
+    about1: `${API_BASE}/update-about-description`,
   };
 
   useEffect(() => {
@@ -161,7 +169,70 @@ const CMSDashboard = () => {
       const response = await fetch(ENDPOINTS.about);
       if (!response.ok) throw new Error('Failed to fetch about');
       const data = await response.json();
-      setAbout(data.content); 
+      setAbout(data); 
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const updateAbout = async () => {
+    try {
+        setLoading(true);
+        const response = await fetch(ENDPOINTS.about, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                description: about.description,
+                description2: about.description2
+            }),
+        });
+        if (!response.ok) throw new Error('Failed to update about');
+        setEditingAbout(false);
+    } catch (err) {
+        setError(err.message);
+    } finally {
+        setLoading(false);
+    }
+};
+
+const addAbout = async () => {
+    try {
+      setLoading(true);
+      const response1 = await fetch(ENDPOINTS.about1, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          description: about.description,
+          description2: about.description2,
+          hobbies: about.hobbies,
+          skills: about.skills,
+        }),
+        });
+      const response = await fetch(ENDPOINTS.about, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          description: about.description,
+          description2: about.description2,
+          hobbies: about.hobbies,
+          skills: about.skills,
+        }),
+      });
+  
+      if (!response.ok) throw new Error('Failed to add about section');
+      
+      // If successful, fetch the updated about section
+      fetchAbout();
+  
+      // Reset form
+      setAbout({
+        description: '',
+        description2: '',
+        hobbies: '',
+        skills: '',
+      });
+  
     } catch (err) {
       setError(err.message);
     } finally {
@@ -169,22 +240,6 @@ const CMSDashboard = () => {
     }
   };
 
-  const updateAbout = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(ENDPOINTS.about, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: about })
-      });
-      if (!response.ok) throw new Error('Failed to update about');
-      setEditingAbout(false);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (loading) {
     return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
@@ -382,34 +437,121 @@ const CMSDashboard = () => {
       {activeTab === 'about' && (
         <div className="bg-white p-6 rounded-lg shadow-sm">
           {editingAbout ? (
-            <div className="space-y-4">
-              <textarea
-                value={about}
-                onChange={e => setAbout(e.target.value)}
-                className="w-full p-2 border rounded min-h-[200px]"
-              />
-              <button
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                onClick={updateAbout}
-              >
-                Save About
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <p className="min-h-[100px]">{about}</p>
-              <button
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                onClick={() => setEditingAbout(true)}
-              >
-                Edit About
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-};
+                <div className="space-y-4">
+                <input
+                    type="text"
+                    placeholder="Description"
+                    className="w-full p-2 border rounded"
+                    value={about.description}
+                    onChange={e => setAbout({ ...about, description: e.target.value })}
+                />
+                <input
+                    type="text"
+                    placeholder="Description 2"
+                    className="w-full p-2 border rounded"
+                    value={about.description2}
+                    onChange={e => setAbout({ ...about, description2: e.target.value })}
+                />
+                <textarea
+                    placeholder="Hobbies"
+                    className="w-full p-2 border rounded"
+                    value={about.hobbies}
+                    onChange={e => setAbout({ ...about, hobbies: e.target.value.split(', ') })}
+                />
+                <textarea
+                    placeholder="Skills"
+                    className="w-full p-2 border rounded"
+                    value={about.skills}
+                    onChange={e => setAbout({ ...about, skills: e.target.value.split(', ') })}
+                />
+                <button
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    onClick={updateAbout}
+                >
+                    Save Changes
+                </button>
+                <button
+                    className="ml-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                    onClick={() => setEditingAbout(false)}
+                >
+                    Cancel
+                </button>
+                </div>
+            ) : (
+                <div>
+                <p className="font-bold">Description: </p>
+                <p>{about.description}</p>
+                <p className="font-bold">Description 2: </p>
+                <p>{about.description2}</p>
+                <p className="font-bold">Hobbies: </p>
+                <ul>
+                    {about && Array.isArray(about) && about.map((item, index) => (
+                        item.hobbies && Array.isArray(item.hobbies) ? (
+                            item.hobbies.map((hobby, hobbyIndex) => (
+                                <li key={`${index}-${hobbyIndex}`}>{hobby}</li>
+                            ))
+                        ) : null
+                    ))}
+                </ul>
 
+                <p className="font-bold">Skills: </p>
+                <ul>
+                    {about && about.skills && Array.isArray(about.skills) && about.skills.map((skill, index) => (
+                        <li key={index}>{skill}</li>
+                    ))}
+                </ul>
+
+                <button
+                    className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    onClick={() => setEditingAbout(true)}
+                >
+                    Edit About
+                </button>
+                </div>
+            )}
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+        <div className="space-y-4">
+          <input
+            type="text"
+            placeholder="Description"
+            className="w-full p-2 border rounded"
+            value={about.description}
+            onChange={e => setAbout({...about, description: e.target.value})}
+          />
+          <input
+            type="text"
+            placeholder="Description 2"
+            className="w-full p-2 border rounded"
+            value={about.description2}
+            onChange={e => setAbout({...about, description2: e.target.value})}
+          />
+          <input
+            type="text"
+            placeholder="Hobbies"
+            className="w-full p-2 border rounded"
+            value={about.hobbies}
+            onChange={e => setAbout({...about, hobbies: e.target.value})}
+          />
+          <input
+            type="text"
+            placeholder="Skills"
+            className="w-full p-2 border rounded"
+            value={about.skills}
+            onChange={e => setAbout({...about, skills: e.target.value})}
+          />
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            onClick={addAbout}
+          >
+            Add About Section
+          </button>
+        </div>
+      </div>
+            </div>
+        )}
+        </div>
+    );
+    };
+          
 export default CMSDashboard;
+          
