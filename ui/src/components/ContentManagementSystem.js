@@ -33,13 +33,12 @@ const CMSDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-//   const API_BASE = 'https://portfolio-cms-ncqv.onrender.com';
-  const API_BASE = 'http://localhost:5001'; 
+  const API_BASE = 'https://portfolio-cms-ncqv.onrender.com';
+//   const API_BASE = 'http://localhost:5001'; 
   const ENDPOINTS = {
     projects: `${API_BASE}/projects`,
     experiences: `${API_BASE}/experiences`,
     about: `${API_BASE}/about`,
-    about1: `${API_BASE}/update-about-description`,
   };
 
   useEffect(() => {
@@ -50,11 +49,10 @@ const CMSDashboard = () => {
 
   const fetchProjects = async () => {
     try {
-      setLoading(true);
+    //   setLoading(true);
       const response = await fetch(ENDPOINTS.projects);
       if (!response.ok) throw new Error('Failed to fetch projects');
       const data = await response.json();
-      console.log(data);
       setProjects(data);
     } catch (err) {
       setError(err.message);
@@ -65,7 +63,7 @@ const CMSDashboard = () => {
 
   const addProject = async () => {
     try {
-      setLoading(true);
+    //   setLoading(true);
       if (editingProject) {
         const response = await fetch(`${ENDPOINTS.projects}/${editingProject.id}`, {
           method: 'PUT',
@@ -93,7 +91,7 @@ const CMSDashboard = () => {
 
   const deleteProject = async (id) => {
     try {
-      setLoading(true);
+    //   setLoading(true);
       const response = await fetch(`${ENDPOINTS.projects}/${id}`, {
         method: 'DELETE'
       });
@@ -108,7 +106,7 @@ const CMSDashboard = () => {
 
   const fetchExperiences = async () => {
     try {
-      setLoading(true);
+    //   setLoading(true);
       const response = await fetch(ENDPOINTS.experiences);
       if (!response.ok) throw new Error('Failed to fetch experiences');
       const data = await response.json();
@@ -122,7 +120,7 @@ const CMSDashboard = () => {
 
   const addExperience = async () => {
     try {
-      setLoading(true);
+    //   setLoading(true);
       if (editingExperience) {
         const response = await fetch(`${ENDPOINTS.experiences}/${editingExperience.id}`, {
           method: 'PUT',
@@ -168,14 +166,24 @@ const CMSDashboard = () => {
       setLoading(true);
       const response = await fetch(ENDPOINTS.about);
       if (!response.ok) throw new Error('Failed to fetch about');
-      const data = await response.json();
-      setAbout(data); 
+      let data = await response.json();
+      data = data[0];
+      const formattedData = {
+        description: data.description || '',
+        description2: data.description2 || '',
+        hobbies: data.hobbies || '',
+        skills: data.skills || ''
+      };
+
+      setAbout(formattedData);
     } catch (err) {
+      console.error("Fetch Error:", err);
       setError(err.message);
     } finally {
       setLoading(false);
     }
   };
+
   const updateAbout = async () => {
     try {
         setLoading(true);
@@ -184,7 +192,9 @@ const CMSDashboard = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 description: about.description,
-                description2: about.description2
+                description2: about.description2,
+                hobbies: about.hobbies,
+                skills: about.skills
             }),
         });
         if (!response.ok) throw new Error('Failed to update about');
@@ -195,50 +205,6 @@ const CMSDashboard = () => {
         setLoading(false);
     }
 };
-
-const addAbout = async () => {
-    try {
-      setLoading(true);
-      const response1 = await fetch(ENDPOINTS.about1, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          description: about.description,
-          description2: about.description2,
-          hobbies: about.hobbies,
-          skills: about.skills,
-        }),
-        });
-      const response = await fetch(ENDPOINTS.about, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          description: about.description,
-          description2: about.description2,
-          hobbies: about.hobbies,
-          skills: about.skills,
-        }),
-      });
-  
-      if (!response.ok) throw new Error('Failed to add about section');
-      
-      // If successful, fetch the updated about section
-      fetchAbout();
-  
-      // Reset form
-      setAbout({
-        description: '',
-        description2: '',
-        hobbies: '',
-        skills: '',
-      });
-  
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
 
   if (loading) {
@@ -453,16 +419,18 @@ const addAbout = async () => {
                     onChange={e => setAbout({ ...about, description2: e.target.value })}
                 />
                 <textarea
+                    type="text"
                     placeholder="Hobbies"
                     className="w-full p-2 border rounded"
                     value={about.hobbies}
-                    onChange={e => setAbout({ ...about, hobbies: e.target.value.split(', ') })}
+                    onChange={e => setAbout({ ...about, hobbies: e.target.value })}
                 />
                 <textarea
+                    type="text"
                     placeholder="Skills"
                     className="w-full p-2 border rounded"
                     value={about.skills}
-                    onChange={e => setAbout({ ...about, skills: e.target.value.split(', ') })}
+                    onChange={e => setAbout({ ...about, skills: e.target.value})}
                 />
                 <button
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -478,75 +446,31 @@ const addAbout = async () => {
                 </button>
                 </div>
             ) : (
-                <div>
-                <p className="font-bold">Description: </p>
-                <p>{about.description}</p>
-                <p className="font-bold">Description 2: </p>
-                <p>{about.description2}</p>
-                <p className="font-bold">Hobbies: </p>
-                <ul>
-                    {about && Array.isArray(about) && about.map((item, index) => (
-                        item.hobbies && Array.isArray(item.hobbies) ? (
-                            item.hobbies.map((hobby, hobbyIndex) => (
-                                <li key={`${index}-${hobbyIndex}`}>{hobby}</li>
-                            ))
-                        ) : null
-                    ))}
-                </ul>
-
-                <p className="font-bold">Skills: </p>
-                <ul>
-                    {about && about.skills && Array.isArray(about.skills) && about.skills.map((skill, index) => (
-                        <li key={index}>{skill}</li>
-                    ))}
-                </ul>
-
-                <button
-                    className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                <div className="space-y-4">
+                    <div>
+                    <h3 className="text-xl font-bold">Description</h3>
+                    <p>{about?.description || 'No description available'}</p>
+                    </div>
+                    <div>
+                    <h3 className="text-xl font-bold">Description 2</h3>
+                    <p>{about.description2 || 'No description available'}</p>
+                    </div>
+                    <div>
+                    <h3 className="text-xl font-bold">Hobbies</h3>
+                    <p>{about.hobbies || 'No hobbies available'}</p>
+                    </div>
+                    <div>
+                    <h3 className="text-xl font-bold">Skills</h3>
+                    <p>{about.skills || 'No skills available'}</p>
+                    </div>
+                    <button
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                     onClick={() => setEditingAbout(true)}
-                >
+                    >
                     Edit About
-                </button>
+                    </button>
                 </div>
             )}
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-        <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="Description"
-            className="w-full p-2 border rounded"
-            value={about.description}
-            onChange={e => setAbout({...about, description: e.target.value})}
-          />
-          <input
-            type="text"
-            placeholder="Description 2"
-            className="w-full p-2 border rounded"
-            value={about.description2}
-            onChange={e => setAbout({...about, description2: e.target.value})}
-          />
-          <input
-            type="text"
-            placeholder="Hobbies"
-            className="w-full p-2 border rounded"
-            value={about.hobbies}
-            onChange={e => setAbout({...about, hobbies: e.target.value})}
-          />
-          <input
-            type="text"
-            placeholder="Skills"
-            className="w-full p-2 border rounded"
-            value={about.skills}
-            onChange={e => setAbout({...about, skills: e.target.value})}
-          />
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            onClick={addAbout}
-          >
-            Add About Section
-          </button>
-        </div>
-      </div>
             </div>
         )}
         </div>
