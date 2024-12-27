@@ -63,6 +63,10 @@ const CMSDashboard = () => {
 
   const addProject = async () => {
     try {
+        if (!validateDateFormat(newProject.duration)) {
+            setError('Date format must be "MMM YYYY - MMM YYYY" or "MMM YYYY - Present" (e.g., Jan 2024 - Dec 2025 or Jan 2024 - Present)');
+            return;
+        }
     //   setLoading(true);
       if (editingProject) {
         const response = await fetch(`${ENDPOINTS.projects}/${editingProject.id}`, {
@@ -293,7 +297,7 @@ const CMSDashboard = () => {
             />
             <input
               type="text"
-              placeholder="Duration"
+              placeholder="e.g. Jan 2024 - Present"
               className="w-full p-2 border rounded"
               value={newProject.duration}
               onChange={e => setNewProject({...newProject, duration: e.target.value})}
