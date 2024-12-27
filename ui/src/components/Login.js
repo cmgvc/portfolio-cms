@@ -57,9 +57,9 @@ export default function Login() {
             <div className="wrapper">
                 <div className="card-switch">
                     <label className="switch">
-                        <input type="checkbox" className="toggle" />
-                            <span className="slider"></span>
-                            <span className="card-side"></span>
+                        {/* <input type="checkbox" className="toggle" /> */}
+                            {/* <span className="slider"></span> */}
+                            {/* <span className="card-side"></span> */}
                             <div className="flip-card__inner">
                                 <div className="flip-card__front">
                                     <div className="title">Log in</div>
@@ -69,7 +69,7 @@ export default function Login() {
                                         <button className="flip-card__btn" onClick={handleLogin}>Let`s go!</button>
                                     </form>
                                 </div>
-                                <div className="flip-card__back">
+                                {/* <div className="flip-card__back">
                                     <div className="title">Sign up</div>
                                     <form className="flip-card__form" action="">
                                         <input className="flip-card__input" placeholder="Username" type="name" onChange={e => setUsername(e.target.value)}/>
@@ -77,7 +77,7 @@ export default function Login() {
                                         <input className="flip-card__input" name="password" placeholder="Password" type="password" onChange={e => setPassword(e.target.value)}/>
                                         <button className="flip-card__btn" onClick={handleRegister}>Confirm!</button>
                                     </form>
-                                </div>
+                                </div> */}
                             </div>
                     </label>
                 </div>   

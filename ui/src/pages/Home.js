@@ -18,7 +18,13 @@ function Home() {
         <div>
             { auth ? 
             <>
-                <h1>Welcome to Your Content Management System!</h1>
+                <div className='logout'>
+                    <button onClick={() => {
+                        localStorage.removeItem('token');
+                        window.location.href = '/';
+                    }   
+                    }>Logout</button>
+                </div>
                 <ContentManagementSystem />
             </>
             : <div className='login'><button onClick={handleRedirect}>Login</button></div>
