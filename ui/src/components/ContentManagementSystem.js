@@ -118,31 +118,49 @@ const CMSDashboard = () => {
     }
   };
 
+  const validateDateFormat = (dateString) => {
+    const parts = dateString.split(' - ');
+    if (parts.length !== 2) return false;
+    
+    const [startDate, endDate] = parts;
+    
+    const dateRegex = /^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s\d{4}$/;
+    if (!dateRegex.test(startDate)) return false;
+    if (endDate !== 'Present' && !dateRegex.test(endDate)) return false;
+    
+    return true;
+  };
+
   const addExperience = async () => {
     try {
-    //   setLoading(true);
-      if (editingExperience) {
-        const response = await fetch(`${ENDPOINTS.experiences}/${editingExperience.id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newExperience)
-        });
-        if (!response.ok) throw new Error('Failed to update experience');
-      } else {
-        const response = await fetch(ENDPOINTS.experiences, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newExperience)
-        });
-        if (!response.ok) throw new Error('Failed to add experience');
-      }
-      fetchExperiences();
-      setEditingExperience(null);
-      setNewExperience({ year: '', title: '', subtitle: '', description: '', details: '' });
+    
+        if (!validateDateFormat(newExperience.year)) {
+            setError('Date format must be "MMM YYYY - MMM YYYY" or "MMM YYYY - Present" (e.g., Jan 2024 - Dec 2025 or Jan 2024 - Present)');
+            return;
+        }
+        //   setLoading(true);
+        if (editingExperience) {
+            const response = await fetch(`${ENDPOINTS.experiences}/${editingExperience.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newExperience)
+            });
+            if (!response.ok) throw new Error('Failed to update experience');
+        } else {
+            const response = await fetch(ENDPOINTS.experiences, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newExperience)
+            });
+            if (!response.ok) throw new Error('Failed to add experience');
+        }
+        fetchExperiences();
+        setEditingExperience(null);
+        setNewExperience({ year: '', title: '', subtitle: '', description: '', details: '' });
     } catch (err) {
-      setError(err.message);
+        setError(err.message);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
   };
 
@@ -327,7 +345,7 @@ const CMSDashboard = () => {
           <div className="bg-white p-6 rounded-lg shadow-sm space-y-4">
             <input
               type="text"
-              placeholder="Year"
+              placeholder="e.g. Jan 2024 - Dec 2025"
               className="w-full p-2 border rounded"
               value={newExperience.year}
               onChange={e => setNewExperience({...newExperience, year: e.target.value})}
@@ -341,7 +359,7 @@ const CMSDashboard = () => {
             />
             <input
               type="text"
-              placeholder="Subtitle"
+              placeholder="Company"
               className="w-full p-2 border rounded"
               value={newExperience.subtitle}
               onChange={e => setNewExperience({...newExperience, subtitle: e.target.value})}
