@@ -49,10 +49,16 @@ const CMSDashboard = () => {
 
   const fetchProjects = async () => {
     try {
-    //   setLoading(true);
       const response = await fetch(ENDPOINTS.projects);
       if (!response.ok) throw new Error('Failed to fetch projects');
-      const data = await response.json();
+      let data = await response.json();
+      data.sort((a, b) => {
+        const parseDate = (date) => (date === 'Present' ? new Date() : new Date(date + '-01'));
+        const [startA, endA] = a.duration.split(' - ');
+        const [startB, endB] = b.duration.split(' - ');
+        return parseDate(endB) - parseDate(endA);
+      });
+  
       setProjects(data);
     } catch (err) {
       setError(err.message);
@@ -60,6 +66,7 @@ const CMSDashboard = () => {
       setLoading(false);
     }
   };
+  
 
   const addProject = async () => {
     try {
@@ -114,6 +121,12 @@ const CMSDashboard = () => {
       const response = await fetch(ENDPOINTS.experiences);
       if (!response.ok) throw new Error('Failed to fetch experiences');
       const data = await response.json();
+      data.sort((a, b) => {
+        const parseDate = (date) => (date === 'Present' ? new Date() : new Date(date + '-01'));
+        const [startA, endA] = a.year.split(' - ');
+        const [startB, endB] = b.year.split(' - ');
+        return parseDate(endB) - parseDate(endA);
+      });
       setExperiences(data);
     } catch (err) {
       setError(err.message);
