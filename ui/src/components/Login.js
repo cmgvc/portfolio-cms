@@ -6,7 +6,8 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const url = 'https://portfolio-cms-ncqv.onrender.com';// 'http://localhost:5001';
+    const url = 'https://portfolio-cms-ncqv.onrender.com';
+    // const url =  'http://localhost:5001';
     
     useEffect(() => {
         localStorage.getItem('token') ? window.location.href = '/' : setAuth(false);
@@ -22,7 +23,8 @@ export default function Login() {
             },
             body: JSON.stringify({email, password})
         });
-        if (response.ok) {
+        console.log(response);
+        if (response.status === 200) {
             const data = await response.json();
             localStorage.setItem('token', data.token);
             localStorage.setItem('email', data.email);
