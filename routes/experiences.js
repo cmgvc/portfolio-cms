@@ -6,7 +6,6 @@ const path = require('path');
 const CSV_FILE = path.join(__dirname, '../data/experiences.csv');
 const CSV_HEADERS = ['id', 'year', 'title', 'subtitle', 'description', 'details'];
 
-// Helper function to escape CSV fields
 const escapeCSV = (field) => {
     if (field === null || field === undefined) return '';
     const stringField = String(field);
@@ -16,7 +15,6 @@ const escapeCSV = (field) => {
     return stringField;
 };
 
-// Helper function to parse CSV fields
 const parseCSV = (line) => {
     const fields = [];
     let field = '';
